@@ -52,19 +52,30 @@ def create_env_file():
         print("Credentials stored securely!")
     return env_path
 
+
 def load_credentials():
-    env_path = Path.home() / ".tpl_credentials.env"
-    if not env_path.exists():
-        env_path = create_env_file()
-        print("Credentials saved. Please re-run the script to continue with reservations.")
-        exit(0)
-    credentials = {}
-    with open(env_path, "r") as f:
-        for line in f:
-            if "=" in line:
-                key, value = line.strip().split("=", 1)
-                credentials[key] = value
-    return credentials.get("TPL_LIBRARY_CARD"), credentials.get("TPL_PIN")
+    # First try environment variables (used in GitHub Actions)
+    library_card = os.getenv("TPL_LIBRARY_CARD")
+    pin = os.getenv("TPL_PIN")
+    if library_card and pin:
+        return library_card, pin
+
+    # Fallback to local .env file for local runs
+    env_path = Path.home() / ".tpl_credentials.env"
+    if not env_path.exists():
+        env_path = create_env_file()
+        print("Credentials saved. Please re-run the script to continue with reservations.")
+        exit(0)
+
+    credentials = {}
+    with open(env_path, "r") as f:
+        for line in f:
+            if "=" in line:
+                key, value = line.strip().split("=", 1)
+                credentials[key] = value
+
+    return credentials.get("TPL_LIBRARY_CARD"), credentials.get("TPL_PIN")
+
 
 def quick_login(driver, library_card, pin):
     try:
