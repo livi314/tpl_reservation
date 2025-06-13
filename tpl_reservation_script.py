@@ -54,13 +54,13 @@ def create_env_file():
 
 
 def load_credentials():
-    # First try environment variables (used in GitHub Actions)
+  # First try environment variables (used in GitHub Actions)
     library_card = os.getenv("TPL_LIBRARY_CARD")
     pin = os.getenv("TPL_PIN")
     if library_card and pin:
         return library_card, pin
 
-    # Fallback to local .env file for local runs
+  # Fallback to local .env file for local runs
     env_path = Path.home() / ".tpl_credentials.env"
     if not env_path.exists():
         env_path = create_env_file()
