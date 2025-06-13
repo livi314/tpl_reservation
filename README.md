@@ -1,7 +1,7 @@
 
 # TPL Reservation Automation
 
-This project automates the process of reserving attraction passes through the Toronto Public Library (TPL) ePass system using Selenium and GitHub Actions.
+This project automates the process of reserving attraction passes through the TPL ePass system using Selenium and GitHub Actions.
 
 ---
 
