@@ -1,37 +1,37 @@
 name: TPL Reservation Automation
 
 on:
-  schedule:
-    - cron: '0 18 3-9 * *'  # Runs at 2:00 PM EST (7:00 PM UTC) between the 3rd and 9th of each month
-  workflow_dispatch:
-    inputs:
-      mode:
-        description: 'Run mode: monthly or daily'
-        required: true
-        default: 'daily'
+  schedule:
+    - cron: '0 18 3-9 * *'  # Runs at 2:00 PM EST (7:00 PM UTC) between the 3rd and 9th of each month
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Run mode: monthly or daily'
+        required: true
+        default: 'daily'
 
 jobs:
-  run-reservation:
-    runs-on: ubuntu-latest
+  run-reservation:
+    runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install selenium pytz
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install selenium pytz
 
-      - name: Set environment variables from GitHub Secrets
-        run: |
-          echo "TPL_LIBRARY_CARD=${{ secrets.TPL_LIBRARY_CARD }}" >> $GITHUB_ENV
-          echo "TPL_PIN=${{ secrets.TPL_PIN }}" >> $GITHUB_ENV
+      - name: Set environment variables from GitHub Secrets
+        run: |
+          echo "TPL_LIBRARY_CARD=${{ secrets.TPL_LIBRARY_CARD }}" >> $GITHUB_ENV
+          echo "TPL_PIN=${{ secrets.TPL_PIN }}" >> $GITHUB_ENV
 
-      - name: Run reservation script
-        run: python tpl_reservation_script.py --mode ${{ github.event.inputs.mode || 'monthly' }}
+      - name: Run reservation script
+        run: python tpl_reservation_script.py --mode ${{ github.event.inputs.mode || 'monthly' }}
